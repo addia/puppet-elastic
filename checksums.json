@@ -1,0 +1,8 @@
+{
+   "LICENSE.md": "4a6fa1aa967fea7598f3b57069f970bc",
+   "Vagrantfile": "e7c97b6aefca2c7e9197f2ec5a79cf0a",
+   "manifests/init.pp": "f0c5a86e636c98257a1018b517b21814",
+   "metadata.json": "2d7d3018c102d2414d0773a0d80889fd",
+   "tests/init.pp": "fceea89a708f466de6927475bba24f31",
+   "README.md": "777460278a9bb7e994e599747129f418"
+}

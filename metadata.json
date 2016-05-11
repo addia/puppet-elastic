@@ -1,0 +1,14 @@
+{
+  "name": "addis-elastic",
+  "version": "0.0.1",
+  "author": "LandRegistry, Addi",
+  "summary": "A puppet module to manage the elasticsearch install at the Land Registry",
+  "license": "MIT",
+  "source": "https://github.com/addi-abel/addis-elastic",
+  "project_page": "https://github.com/addi-abel/addis-elastic",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
+    {"name":"elasticsearch-elasticsearch","version_requirement":">= 1.0.0"}
+  ],
+  "data_provider": null
+}
