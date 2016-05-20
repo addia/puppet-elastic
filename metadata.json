@@ -8,7 +8,8 @@
   "project_page": "https://github.com/addi-abel/addis-elastic",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
-    {"name":"elasticsearch-elasticsearch","version_requirement":">= 1.0.0"}
+    {"name":"elasticsearch-elasticsearch","version_requirement":">= 0.10.3"},
+    {"name":"puppetlabs-java","version_requirement":">= 1.5.0"}
   ],
   "data_provider": null
 }
