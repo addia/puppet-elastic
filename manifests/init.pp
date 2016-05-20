@@ -49,13 +49,13 @@ class elastic (
   ){
 
   class { 'elasticsearch':
-    version           => ${version},
-    manage_repo       => ${repo_manage},
-    repo_version      => ${repo_version},
-    autoupgrade       => ${auto_upgrade},
-    java_install      => ${java_manage},
-    java_package      => ${java_pkg},
-    datadir           => ${data_dir},
+    version           => $version,
+    manage_repo       => $repo_manage,
+    repo_version      => $repo_version,
+    autoupgrade       => $auto_upgrade,
+    java_install      => $java_manage,
+    java_package      => $java_pk,
+    datadir           => $data_dir,
     config            => {
       'cluster.name'                         => $clustername,
       'discovery.zen.ping.multicast.enabled' => false
