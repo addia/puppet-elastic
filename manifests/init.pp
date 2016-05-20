@@ -53,8 +53,8 @@ class elastic (
     manage_repo       => ${repo_manage},
     repo_version      => ${repo_version},
     autoupgrade       => ${auto_upgrade},
-    java_installi     => ${java_manage},
-    java_packagei     => ${java_pkg},
+    java_install      => ${java_manage},
+    java_package      => ${java_pkg},
     datadir           => ${data_dir},
     config            => {
       'cluster.name'                         => ${clustername},
