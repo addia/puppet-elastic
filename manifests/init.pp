@@ -40,33 +40,33 @@ class elastic (
   $clustername        = 'ops-es-cluster',
   $version            = '2.3.2',
   $repo_version       = '2.x',
-  $repo_manage        = 'true',
-  $auto_upgrade       = 'false',
-  $java_manage        = 'true',
+  $repo_manage        = true,
+  $auto_upgrade       = false,
+  $java_manage        = true,
   $java_pkg           = 'java-1.8.0-openjdk',
   $data_dir           = '/var/lib/es-data'
 
   ){
 
   class { 'elasticsearch':
-    version           => ${version},
-    manage_repo       => ${repo_manage},
-    repo_version      => ${repo_version},
-    autoupgrade       => ${auto_upgrade},
-    java_install      => ${java_manage},
-    java_package      => ${java_pkg},
-    datadir           => ${data_dir},
+    version           => $version,
+    manage_repo       => $repo_manage,
+    repo_version      => $repo_version,
+    autoupgrade       => $auto_upgrade,
+    java_install      => $java_manage,
+    java_package      => $java_pk,
+    datadir           => $data_dir,
     config            => {
-      'cluster.name'                         => ${clustername},
-      #'discovery.zen.ping.multicast.enabled' => false
+      'cluster.name'                         => $clustername,
+      'discovery.zen.ping.multicast.enabled' => false
       }
   }
 
   elasticsearch::instance { "$::hostname": }
 
-  elasticsearch::plugin{'lmenezes/elasticsearch-kopf'
+  elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
     instances  => $::hostname
   }
-
+}
 
 # vim: set ts=2 sw=2 et :
