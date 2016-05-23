@@ -59,6 +59,7 @@ class elastic (
     config            => {
       'cluster.name'                         => $clustername,
       'discovery.zen.ping.multicast.enabled' => false
+
       }
   }
 
