@@ -56,11 +56,6 @@ class elastic (
     java_install      => $java_manage,
     java_package      => $java_pk,
     datadir           => $data_dir,
-    config            => {
-      'cluster.name'                         => $clustername,
-      # 'discovery.zen.ping.multicast.enabled' => false
-
-      }
   }
 
   elasticsearch::instance { "$::hostname": }
