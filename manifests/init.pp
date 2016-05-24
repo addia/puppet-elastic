@@ -61,9 +61,7 @@ class elastic (
     config            => {
       'cluster.name' =>  $clustername,
       'discovery.zen.ping.multicast.enabled' => false,
-      'network.host' =>  $::ipaddress_eth1,
-      'http.port'    => '9200',
-      'https.port'   => '9300',
+      'network.host' =>  $::ipaddress_eth1
     }
   }
 
