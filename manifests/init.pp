@@ -67,10 +67,10 @@ class elastic (
   elasticsearch::instance { "ops-els":
     ssl               => true,
     #ca_certificate    => "/etc/pki/ca-trust/source/anchors/elk_ca.crt",
-    ca_certificate    => "";
+    ca_certificate    => "",
     certificate       => $elastic_cert,
     private_key       => $elastic_key,
-    keystore_password => "";
+    keystore_password => "",
   }
 
   elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
