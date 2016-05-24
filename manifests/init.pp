@@ -60,7 +60,10 @@ class elastic (
     datadir           => $data_dir,
     config            => {
       'cluster.name' =>  $clustername,
-      'network.host' => '0.0.0.0'
+      'discovery.zen.ping.multicast.enabled' => false,
+      'network.host' =>  $::ipaddress_eth1,
+      'http.port'    => '9200',
+      'https.port'   => '9300',
     }
   }
 
