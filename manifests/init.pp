@@ -64,7 +64,7 @@ class elastic (
     }
   }
 
-  elasticsearch::instance { "ops-els"
+  elasticsearch::instance { "ops-els":
     ssl               => true,
     certificate       => $elastic_cert,
     private_key       => $elastic_key 
