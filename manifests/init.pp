@@ -74,7 +74,7 @@ class elastic (
   }
 
   elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
-    instances  => $::hostname
+    instances  => 'ops-els'
   }
   
   file { "/etc/elasticsearch/ssl" :
