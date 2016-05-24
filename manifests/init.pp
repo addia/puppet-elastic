@@ -44,6 +44,8 @@ class elastic (
   $auto_upgrade       = false,
   $java_manage        = true,
   $java_pkg           = 'java-1.8.0-openjdk',
+  $elastic_cert       = '/etc/elasticsearch/ssl/elastic.crt',
+  $elastic_key        = '/etc/elasticsearch/ssl/elastic.key',
   $data_dir           = '/var/lib/es-data'
 
   ){
@@ -56,14 +58,45 @@ class elastic (
     java_install      => $java_manage,
     java_package      => $java_pk,
     datadir           => $data_dir,
-    config            => { 'cluster.name' =>  $clustername }
+    config            => {
+      'cluster.name' =>  $clustername,
+      'network.host' => '0.0.0.0',
+    }
   }
 
-  elasticsearch::instance { "$::hostname": }
+  elasticsearch::instance { "ops-els"
+    ssl               => true,
+    certificate       => $elastic_cert,
+    private_key       => $elastic_key 
+  }
 
   elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
     instances  => $::hostname
   }
+  
+  file { "/etc/elasticsearch/ssl" :
+    ensure            => 'directory',
+    owner             => 'root',
+    group             => 'root',
+    mode              => '0755',
+  }
+
+  file { $elastic_key:
+    ensure            => file,
+    owner             => 'root',
+    group             => 'root',
+    mode              => '0644',
+    content           => hiera('elk_stack_elastic_key')
+  }
+
+  file { $elastic_cert:
+    ensure            => file,
+    owner             => 'root',
+    group             => 'root',
+    mode              => '0644',
+    content           => hiera('elk_stack_elastic_cert')
+  }
+
 }
 
 # vim: set ts=2 sw=2 et :
