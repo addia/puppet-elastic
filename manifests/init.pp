@@ -60,14 +60,16 @@ class elastic (
     datadir           => $data_dir,
     config            => {
       'cluster.name' =>  $clustername,
-      'network.host' => '0.0.0.0',
+      'network.host' => '0.0.0.0'
     }
   }
 
   elasticsearch::instance { "ops-els":
     ssl               => true,
+    ca_certificate    => "/etc/pki/ca-trust/source/anchors/elk_ca.crt",
     certificate       => $elastic_cert,
-    private_key       => $elastic_key 
+    private_key       => $elastic_key,
+    keystore_password => 'keystorepassword' 
   }
 
   elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
