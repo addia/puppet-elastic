@@ -56,6 +56,7 @@ class elastic (
     java_install      => $java_manage,
     java_package      => $java_pk,
     datadir           => $data_dir,
+    config            => { 'cluster.name' =>  $clustername }
   }
 
   elasticsearch::instance { "$::hostname": }
