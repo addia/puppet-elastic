@@ -38,6 +38,7 @@
 #
 class elastic (
   $clustername        = 'ops-es-cluster',
+  $cluster_servers    = hiera('elk_stack_elastic_servers'),
   $version            = '2.3.2',
   $repo_version       = '2.x',
   $repo_manage        = true,
@@ -61,6 +62,7 @@ class elastic (
     config            => {
       'cluster.name' =>  $clustername,
       'discovery.zen.ping.multicast.enabled' => false,
+      'discovery.zen.ping.unicast.hosts'     => $cluster_servers,
       'network.host' =>  $::ipaddress_eth1
     }
   }
@@ -74,6 +76,10 @@ class elastic (
     keystore_password => "keystore_pass",
   }
 
+  elasticsearch::plugin{ 'mobz/elasticsearch-head':
+    instances  => 'ops-els'
+  }
+  
   elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
     instances  => 'ops-els'
   }
