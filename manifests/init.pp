@@ -37,7 +37,7 @@
 #
 #
 class elastic (
-  $clustername        = 'es-blue-cluster',
+  $clustername        = hiera('elk_stack_elastic_clustername'),
   $cluster_servers    = hiera('elk_stack_elastic_servers'),
   $version            = '2.3.2',
   $repo_version       = '2.x',
@@ -50,6 +50,8 @@ class elastic (
   $data_dir           = '/var/lib/es-data'
 
   ){
+
+  notify { "## --->>> Installing and configuring ${clustername}": }
 
   class { 'elasticsearch':
     version           => $version,
