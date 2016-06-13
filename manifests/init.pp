@@ -37,7 +37,7 @@
 #
 #
 class elastic (
-  $clustername        = 'ops-es-cluster',
+  $clustername        = 'es-blue-cluster',
   $cluster_servers    = hiera('elk_stack_elastic_servers'),
   $version            = '2.3.2',
   $repo_version       = '2.x',
