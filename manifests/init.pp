@@ -43,6 +43,7 @@
 #
 class elastic (
   $clustername                 = hiera('elk_stack_elastic_clustername'),
+  $instance                    = hiera('elk_stack_elastic_instance'),
   $cluster_servers             = hiera('elk_stack_elastic_servers'),
   $version                     = '2.3.2',
   $repo_version                = '2.x',
@@ -55,7 +56,7 @@ class elastic (
   $elastic_ca_cert             = '/etc/pki/ca-trust/source/anchors/elk_ca_cert.crt',
   $elastic_cert                = '/etc/elasticsearch/ssl/elastic.crt',
   $elastic_key                 = '/etc/elasticsearch/ssl/elastic.key',
-  $data_dir                    = '/var/lib/es-data'
+  $data_dir                    = '/var/lib/elasticsearch',
 ){
 
   notify { "## --->>> Installing and configuring ${clustername}": }
@@ -86,11 +87,11 @@ class elastic (
     }
 
   elasticsearch::plugin{ 'mobz/elasticsearch-head':
-    instances                  => 'ops-els',
+    instances                  => $instance,
     }
   
   elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
-    instances                  => 'ops-els',
+    instances                  => $instance,
     }
   
   file { "/etc/elasticsearch/ssl" :
