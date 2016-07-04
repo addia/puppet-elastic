@@ -10,14 +10,19 @@
 #
 # Document all Parameters:
 #
-#   Explanation of what this parameter affects and what it defaults to.
 #   clustername       = the elasticsearch cluster name
+#   cluster_servers   = the servers addresses to configure the cluster
 #   version           = version to install
 #   repo_version      = yum repo version
 #   repo_manage       = 'true' for installing the yum.repo file
 #   auto_upgrade      = 'false' for NOT to autoupgrade ES
 #   java_manage       = 'true' for installing Java
 #   java_pkg          = which java package to install
+#   elastic_ca_cert   = the CA certificate for the ELK stack
+#   elastic_cert      = the certificate for the elastic cluster
+#   elastic_key       = the private for the elastic cluster
+#   keystore_dir      = leave as default
+#   keystore_passwd   = java keystore password
 #   data_dir          = directory for saving the ES data
 #
 #
@@ -45,6 +50,8 @@ class elastic (
   $auto_upgrade                = false,
   $java_manage                 = true,
   $java_pkg                    = 'java-1.8.0-openjdk',
+  $keystore_dir                = undef,
+  $keystore_passwd             = "keystore_pass",
   $elastic_ca_cert             = '/etc/pki/ca-trust/source/anchors/elk_ca_cert.crt',
   $elastic_cert                = '/etc/elasticsearch/ssl/elastic.crt',
   $elastic_key                 = '/etc/elasticsearch/ssl/elastic.key',
@@ -74,16 +81,16 @@ class elastic (
     ca_certificate             => $elastic_ca_cert,
     certificate                => $elastic_cert,
     private_key                => $elastic_key,
-    keystore_path              => undef,
-    keystore_password          => "keystore_pass",
+    keystore_path              => $keystore_dir,
+    keystore_password          => $keystore_passwd,
     }
 
   elasticsearch::plugin{ 'mobz/elasticsearch-head':
-    instances                  => 'ops-els'
+    instances                  => 'ops-els',
     }
   
   elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
-    instances                  => 'ops-els'
+    instances                  => 'ops-els',
     }
   
   file { "/etc/elasticsearch/ssl" :
