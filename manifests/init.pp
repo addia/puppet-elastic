@@ -18,7 +18,7 @@
 #   auto_upgrade      = 'false' for NOT to autoupgrade ES
 #   java_manage       = 'true' for installing Java
 #   java_pkg          = which java package to install
-#   ssl_ca_cert       = the CA certificate for self signed certs
+#   ssl_cacert_file   = the CA certificate for self signed certs
 #   elastic_cert      = the certificate for the elastic cluster
 #   elastic_key       = the private for the elastic cluster
 #   keystore_dir      = leave as default
@@ -79,7 +79,7 @@ class elastic (
 
   elasticsearch::instance { "ops-els":
     ssl                        => true,
-    ca_certificate             => $ssl_ca_cert,
+    ca_certificate             => $ssl_cacert_file,
     certificate                => $elastic_cert,
     private_key                => $elastic_key,
     keystore_path              => $keystore_dir,
