@@ -53,7 +53,7 @@ class elastic (
   $java_pkg                    = 'java-1.8.0-openjdk',
   $keystore_dir                = undef,
   $keystore_passwd             = "keystore_pass",
-  $ssl_ca_cert                 = '/etc/pki/ca-trust/source/anchors/elk_ca_cert.crt',
+  $ssl_cacert_file             = '/etc/pki/ca-trust/source/anchors/elk_ca_cert.crt',
   $elastic_cert                = '/etc/elasticsearch/ssl/elastic.crt',
   $elastic_key                 = '/etc/elasticsearch/ssl/elastic.key',
   $data_dir                    = '/var/lib/elasticsearch',
