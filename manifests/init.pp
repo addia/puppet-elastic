@@ -18,7 +18,7 @@
 #   auto_upgrade      = 'false' for NOT to autoupgrade ES
 #   java_manage       = 'true' for installing Java
 #   java_pkg          = which java package to install
-#   elastic_ca_cert   = the CA certificate for the ELK stack
+#   ssl_ca_cert       = the CA certificate for self signed certs
 #   elastic_cert      = the certificate for the elastic cluster
 #   elastic_key       = the private for the elastic cluster
 #   keystore_dir      = leave as default
@@ -53,7 +53,7 @@ class elastic (
   $java_pkg                    = 'java-1.8.0-openjdk',
   $keystore_dir                = undef,
   $keystore_passwd             = "keystore_pass",
-  $elastic_ca_cert             = '/etc/pki/ca-trust/source/anchors/elk_ca_cert.crt',
+  $ssl_ca_cert                 = '/etc/pki/ca-trust/source/anchors/elk_ca_cert.crt',
   $elastic_cert                = '/etc/elasticsearch/ssl/elastic.crt',
   $elastic_key                 = '/etc/elasticsearch/ssl/elastic.key',
   $data_dir                    = '/var/lib/elasticsearch',
@@ -79,7 +79,7 @@ class elastic (
 
   elasticsearch::instance { "ops-els":
     ssl                        => true,
-    ca_certificate             => $elastic_ca_cert,
+    ca_certificate             => $ssl_ca_cert,
     certificate                => $elastic_cert,
     private_key                => $elastic_key,
     keystore_path              => $keystore_dir,
