@@ -1,8 +1,8 @@
 {
+   "tests/init.pp": "691d55393317bb30624b10ba348b7884",
+   "manifests/init.pp": "55ace236676d52514c35721bb7a96120",
    "LICENSE.md": "4a6fa1aa967fea7598f3b57069f970bc",
-   "Vagrantfile": "e7c97b6aefca2c7e9197f2ec5a79cf0a",
-   "manifests/init.pp": "f0c5a86e636c98257a1018b517b21814",
-   "metadata.json": "2d7d3018c102d2414d0773a0d80889fd",
-   "tests/init.pp": "fceea89a708f466de6927475bba24f31",
-   "README.md": "777460278a9bb7e994e599747129f418"
+   "README.md": "777460278a9bb7e994e599747129f418",
+   "Vagrantfile": "4833e7339114a57c77ae844d0586553a",
+   "metadata.json": "2fb30c0e0be66ce7b9c9753c940d846f"
 }
