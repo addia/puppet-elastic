@@ -77,7 +77,7 @@ class elastic (
       }
     }
 
-  elasticsearch::instance { "ops-els":
+  elasticsearch::instance { $instance:
     ssl                        => true,
     ca_certificate             => $ssl_cacert_file,
     certificate                => $elastic_cert,

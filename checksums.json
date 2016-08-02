@@ -1,6 +1,6 @@
 {
    "tests/init.pp": "691d55393317bb30624b10ba348b7884",
-   "manifests/init.pp": "55ace236676d52514c35721bb7a96120",
+   "manifests/init.pp": "ddfc25569410c9456ff50321de7f4951",
    "LICENSE.md": "4a6fa1aa967fea7598f3b57069f970bc",
    "README.md": "777460278a9bb7e994e599747129f418",
    "Vagrantfile": "4833e7339114a57c77ae844d0586553a",
