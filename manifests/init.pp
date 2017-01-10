@@ -10,20 +10,22 @@
 #
 # Document all Parameters:
 #
-#   clustername       = the elasticsearch cluster name
-#   cluster_servers   = the servers addresses to configure the cluster
 #   version           = version to install
 #   repo_version      = yum repo version
 #   repo_manage       = 'true' for installing the yum.repo file
 #   auto_upgrade      = 'false' for NOT to autoupgrade ES
 #   java_manage       = 'true' for installing Java
 #   java_pkg          = which java package to install
+#   clustername       = the elasticsearch cluster name
+#   instance          = the elasticsearch instance name
+#   cluster_servers   = the servers addresses to configure the cluster
+#   keystore_dir      = leave as default
+#   keystore_passwd   = java keystore password
 #   ssl_cacert_file   = the CA certificate for self signed certs
 #   elastic_cert      = the certificate for the elastic cluster
 #   elastic_key       = the private for the elastic cluster
-#   keystore_dir      = leave as default
-#   keystore_passwd   = java keystore password
 #   data_dir          = directory for saving the ES data
+#   beats_dashboard   = the filename and version of the zip file to download and install
 #
 #
 # ===========================
@@ -42,81 +44,33 @@
 #
 #
 class elastic (
-  $clustername                 = hiera('elk_stack_elastic_clustername'),
-  $instance                    = hiera('elk_stack_elastic_instance'),
-  $cluster_servers             = hiera('elk_stack_elastic_servers'),
-  $version                     = '2.3.2',
-  $repo_version                = '2.x',
-  $repo_manage                 = true,
-  $auto_upgrade                = false,
-  $java_manage                 = true,
-  $java_pkg                    = 'java-1.8.0-openjdk',
-  $keystore_dir                = undef,
-  $keystore_passwd             = "keystore_pass",
-  $ssl_cacert_file             = '/etc/pki/ca-trust/source/anchors/elk_ca_cert.crt',
-  $elastic_cert                = '/etc/elasticsearch/ssl/elastic.crt',
-  $elastic_key                 = '/etc/elasticsearch/ssl/elastic.key',
-  $data_dir                    = '/var/lib/elasticsearch',
-){
+  $version                     = $elastic::params::version,
+  $repo_version                = $elastic::params::repo_version,
+  $repo_manage                 = $elastic::params::repo_manage,
+  $auto_upgrade                = $elastic::params::auto_upgrade,
+  $java_manage                 = $elastic::params::java_manage,
+  $java_pkg                    = $elastic::params::java_pkg,
+  $clustername                 = $elastic::params::clustername,
+  $instance                    = $elastic::params::instance,
+  $cluster_servers             = $elastic::params::cluster_servers,
+  $keystore_dir                = $elastic::params::keystore_dir,
+  $keystore_passwd             = $elastic::params::keystore_passwd,
+  $ssl_cacert_file             = $elastic::params::ssl_cacert_file,
+  $elastic_cert                = $elastic::params::elastic_cert,
+  $elastic_key                 = $elastic::params::elastic_key,
+  $beats_dashboard             = $elastic::params::beats_dashboard,
+  $data_dir                    = $elastic::params::data_dir
+) {
 
-  notify { "## --->>> Installing and configuring ${clustername}": }
+  include elastic::params
 
-  class { 'elasticsearch':
-    version                    => $version,
-    manage_repo                => $repo_manage,
-    repo_version               => $repo_version,
-    autoupgrade                => $auto_upgrade,
-    java_install               => $java_manage,
-    java_package               => $java_pkg,
-    datadir                    => $data_dir,
-    config                     => {
-      'cluster.name'           =>  $clustername,
-      'discovery.zen.ping.multicast.enabled' => false,
-      'discovery.zen.ping.unicast.hosts'     => $cluster_servers,
-      'network.host'           =>  $::ipaddress_eth1
-      }
-    }
+  notify { "## --->>> configuring package ${clustername}": }
 
-  elasticsearch::instance { $instance:
-    ssl                        => true,
-    ca_certificate             => $ssl_cacert_file,
-    certificate                => $elastic_cert,
-    private_key                => $elastic_key,
-    keystore_path              => $keystore_dir,
-    keystore_password          => $keystore_passwd,
-    }
+    anchor { 'elastic::begin': } ->
+    class { '::elastic::install': } ->
+    class { '::elastic::config': } ~>
+    anchor { 'elastic::end': }
 
-  elasticsearch::plugin{ 'mobz/elasticsearch-head':
-    instances                  => $instance,
-    }
-  
-  elasticsearch::plugin{ 'lmenezes/elasticsearch-kopf':
-    instances                  => $instance,
-    }
-  
-  file { "/etc/elasticsearch/ssl" :
-    ensure                     => 'directory',
-    owner                      => 'root',
-    group                      => 'root',
-    mode                       => '0755',
-    }
-
-  file { $elastic_key:
-    ensure                     => file,
-    owner                      => 'root',
-    group                      => 'root',
-    mode                       => '0644',
-    content                    => hiera('elk_stack_elastic_key')
-    }
-
-  file { $elastic_cert:
-    ensure                     => file,
-    owner                      => 'root',
-    group                      => 'root',
-    mode                       => '0644',
-    content                    => hiera('elk_stack_elastic_cert')
-    }
-
-  }
+}
 
 # vim: set ts=2 sw=2 et :
