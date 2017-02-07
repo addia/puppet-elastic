@@ -14,7 +14,7 @@ export PATH
 ###   variables:
 ###   ----------
 ###     user changable vars: 
-###       DAYS            -  set to a number of days to keep
+###       DAYS_KEEP       -  set to a number of days to keep
 ###       INDEX_PREFIX    -  array of indicies space separated
 ###
 ###     change at own risk vars:
@@ -43,8 +43,8 @@ fi
 
 # user variables
 # --------------
-DAYS=30
-INDEX_PREFIX="logstash"
+DAYS="<%= @days_keep %>"
+INDEX_PREFIX="<%= @index_prefix %>"
 
 
 # system variables

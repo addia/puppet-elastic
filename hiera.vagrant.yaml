@@ -1,0 +1,12 @@
+---
+:backends:
+  - yaml
+
+:yaml:
+  :datadir: /vagrant/hiera/
+:hierarchy:
+  - cluster/vagrant
+  - network_location/vagrant
+  - nodes/vagrant
+  - types/vagrant
+  - common

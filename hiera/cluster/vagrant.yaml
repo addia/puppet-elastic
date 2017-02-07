@@ -1,0 +1,22 @@
+---
+
+# This hiera configuration is for the elasticsearch cluster config
+# ----------------------------------------------------------------
+
+
+elk_stack_elastic_clustername: "els-dev-cluster"
+
+elk_stack_elastic_instance: "els-dev"
+
+elk_stack_elastic_servers: ['192.168.42.56', '192.168.42.57', '192.168.42.58']
+
+elk_stack_do_housekeeping: true
+
+elk_stack_days_to_keep: 30
+
+elk_stack_index_prefix: ['logstash']
+
+
+
+# -----------------------
+# vim: set ts=2 sw=2 et :
