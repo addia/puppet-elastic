@@ -85,15 +85,20 @@ root_ca_cert: |
 
 ##### Explanations:
 
-elk_stack_elastic_key: openssl key file content
-elk_stack_elastic_cert: openssl cert file content
-root_ca_cert: openssl ca cert file content
 The three fields can be empty "" if the server is set to http.
+
+| Variable | Description | Comments |
+| ------------- |-------------|-------------|
+|elk_stack_elastic_key | openssl key file content||
+|elk_stack_elastic_cert | openssl cert file content||
+|root_ca_cert | openssl ca cert file content||
 
 
 ### Troubleshooting:
 
 ```
+Check the server status with:
+
 curl -XGET "http://<SERVER_IP>:9200/_nodes/_local?human&pretty"
 
 curl -XGET "http://<SERVER_IP>:9200/_cluster/health?waitForStatus=green&pretty=true"
@@ -105,14 +110,18 @@ curl -XGET 'http://<SERVER_IP>:9200/_cluster/stats?human&pretty
 ### Documentation:
 
 https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
+
 http://tecadmin.net/install-elasticsearch-multi-node-cluster-on-linux/#
+
 http://devopscube.com/how-to-setup-an-elasticsearch-cluster/
 
-checking with:  http://<elastic-vip:9200/_plugin/head/
 
+
+### Message Management
 
 ```
-### Message Management
+
+todo
 
 ```
 
