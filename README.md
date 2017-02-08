@@ -83,7 +83,7 @@ root_ca_cert: |
 
 ```
 
-##### Explanations:
+##### Explanations
 
 The three fields can be empty "" if the server is set to http.
 
@@ -94,9 +94,10 @@ The three fields can be empty "" if the server is set to http.
 |root_ca_cert | openssl ca cert file content||
 
 
-### Troubleshooting:
+### Troubleshooting
 
 ```
+
 Check the server status with:
 
 curl -XGET "http://<SERVER_IP>:9200/_nodes/_local?human&pretty"
@@ -105,9 +106,18 @@ curl -XGET "http://<SERVER_IP>:9200/_cluster/health?waitForStatus=green&pretty=t
 
 curl -XGET 'http://<SERVER_IP>:9200/_cluster/stats?human&pretty
 
+
+Checking which one the MASTER node is:  (all fixes need to be made on the master node !!)
+
+ID of MASTER node:  curl -s -XGET "http://<SERVER_IP>:9200/_cluster/state/master_node?human&pretty" | grep master_node | awk '{print $3}'
+
+ID of current node:  curl -s -XGET "http://<SERVER_IP>:9200/_nodes/_local?human&pretty" | grep -A1 nodes | tail -1 | awk '{print $1}'
+
+if the IDs are identical you are on the MASTER node.
+
 ```
 
-### Documentation:
+### Documentation
 
 https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
 
@@ -117,11 +127,18 @@ http://devopscube.com/how-to-setup-an-elasticsearch-cluster/
 
 
 
-### Message Management
+### Database and Index Management
 
 ```
 
-todo
+Maniplating of indices, data, shards etc all need to be done on the master node !!  check above how to check !!
+
+Deleting a index: 
+
+list the indexes: curl -s -XGET  "http://<SERVER_IP>:9200/_cat/indices?v" | sort
+delete a index: curl -XDELETE "http://<SERVER_IP>:9200/<one index from list above"
+
+....   much more to list here
 
 ```
 
