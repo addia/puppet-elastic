@@ -17,7 +17,7 @@ A puppet module to manage the install of Elasticsearch at the Land Registry
 
 ## Usage
 
-### Create a YAML file in the secrets repo 'cluster' folder to build a server or a cluster for Elasticsearch using the following basic examples:
+### Create a YAML file in the secrets repo inside the 'cluster' folder to build a server or a cluster for Elasticsearch using the following basic examples:
 
 ```
 
@@ -40,8 +40,18 @@ elk_stack_index_prefix: ['logstash']
 
 ```
 
+### Explanations:
 
-### Create a YAML file in the secrets repo 'network_location' folder to provide a few variables for the server or cluster using the following basic examples:
+elk_stack_elastic_clustername: The elastic cluster or server name.
+elk_stack_elastic_instance: The elastic database instance name.
+elk_stack_elastic_servers: The hash of one or more server names.  Working DNS is required !!!
+elk_stack_tls_protocol: What protocoll to use, http or https.
+elk_stack_do_housekeeping: Enable housekeeping with "true" or non of that with "undef".
+elk_stack_days_to_keep: The number of days to keep in the database.
+elk_stack_index_prefix: The hash of Elastic search indices.
+
+
+### Create a YAML file in the secrets repo inside the 'network_location' folder to provide a few variables for the server or cluster using the following basic examples:
 
 ```
 
@@ -71,6 +81,26 @@ root_ca_cert: |
 
 ```
 
+### Explanations:
+
+elk_stack_elastic_key: openssl key file content
+elk_stack_elastic_cert: openssl cert file content
+root_ca_cert: openssl ca cert file content
+The three fields can be empty "" if the server is set to http.
+
+
+### Troubleshooting:
+
+```
+curl -XGET "http://<SERVER_IP>:9200/_nodes/_local?human&pretty"
+
+curl -XGET "http://<SERVER_IP>:9200/_cluster/health?waitForStatus=green&pretty=true"
+
+curl -XGET 'http://<SERVER_IP>:9200/_cluster/stats?human&pretty
+
+```
+
+### Documentation:
 
 https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
 http://tecadmin.net/install-elasticsearch-multi-node-cluster-on-linux/#
@@ -84,7 +114,6 @@ checking with:  http://<elastic-vip:9200/_plugin/head/
 
 ```
 
-```
 
 ### License
 
