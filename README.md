@@ -40,15 +40,17 @@ elk_stack_index_prefix: ['logstash']
 
 ```
 
-### Explanations:
+### Explanations
 
-elk_stack_elastic_clustername: The elastic cluster or server name.
-elk_stack_elastic_instance: The elastic database instance name.
-elk_stack_elastic_servers: The hash of one or more server names.  Working DNS is required !!!
-elk_stack_tls_protocol: What protocoll to use, http or https.
-elk_stack_do_housekeeping: Enable housekeeping with "true" or non of that with "undef".
-elk_stack_days_to_keep: The number of days to keep in the database.
-elk_stack_index_prefix: The hash of Elastic search indices.
+| Variable | Description | Comments |
+| ------------- |-------------|-------------|
+|elk_stack_elastic_clustername: | The elastic cluster or server name||
+|elk_stack_elastic_instance: | The elastic database instance name||
+|elk_stack_elastic_servers: | The hash of one or more server names. |  Working DNS is required !!|
+|elk_stack_tls_protocol: | What protocoll to use, http or https||
+|elk_stack_do_housekeeping: | Enable housekeeping with "true" or non of that with "undef"||
+|elk_stack_days_to_keep: | The number of days to keep in the database||
+|elk_stack_index_prefix: | The hash of Elastic search indices||
 
 
 ### Create a YAML file in the secrets repo inside the 'network_location' folder to provide a few variables for the server or cluster using the following basic examples:
