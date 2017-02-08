@@ -141,7 +141,7 @@ class elastic (
 
     ca_cert::ca { 'lr_rootca':
       ensure => 'trusted',
-      source => 'puppet:///modules/elastic/lr_rootca.crt',
+      source => hiera('root_ca_cert')
       }
     }
 
