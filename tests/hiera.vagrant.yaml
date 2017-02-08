@@ -3,7 +3,7 @@
   - yaml
 
 :yaml:
-  :datadir: /vagrant/hiera/
+  :datadir: /vagrant/tests/hiera/
 :hierarchy:
   - cluster/vagrant
   - network_location/vagrant

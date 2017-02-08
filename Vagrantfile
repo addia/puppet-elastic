@@ -10,7 +10,11 @@ Vagrant.configure(2) do |conf|
 
   conf.vm.provision "shell", inline: <<-SCRIPT
     sed -i -e 's,keepcache=0,keepcache=1,g' /etc/yum.conf
+    sed -i -e 's,#PermitRootLogin,PermitRootLogin,g' /etc/ssh/sshd_config
+    cp /vagrant/tests/hosts.vagrant.conf /etc/hosts
+    systemctl restart sshd
     yum install -y git
+    yum install -y telnet
     puppet module install puppetlabs-stdlib
     puppet module install elasticsearch-elasticsearch
     puppet module install ceritsc-yum
@@ -21,7 +25,7 @@ Vagrant.configure(2) do |conf|
     puppet module install pcfens-ca_cert --version 1.3.0
     puppet module install camptocamp-openssl
     cd /etc/puppet/
-    ln -s /vagrant/hiera.vagrant.yaml /etc/puppet/hiera.yaml
+    ln -s /vagrant/tests/hiera.vagrant.yaml /etc/puppet/hiera.yaml
     cd /etc/puppet/modules
     ln -s /vagrant /etc/puppet/modules/elastic
     puppet apply /vagrant/tests/init.pp
