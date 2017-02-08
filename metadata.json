@@ -1,6 +1,6 @@
 {
   "name": "puppet-elastic",
-  "version": "0.0.2",
+  "version": "3.0.1",
   "author": "LandRegistry, Addi Abel",
   "summary": "A puppet module to manage the elasticsearch install at the Land Registry",
   "license": "MIT",

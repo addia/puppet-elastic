@@ -4,7 +4,7 @@ A puppet module to manage the install of Elastic search at the Land Registry
 
 ## Requirements
 
-* Puppet  >=  3.4
+* A [Puppet](https://puppet.com/product/open-source-projects) Master server version 3.4 or later.
 * The [stdlib](https://forge.puppet.com/puppetlabs/stdlib) Puppet library.
 * The [elasticsearch](https://forge.puppet.com/elasticsearch/elasticsearch) Elasticsearch module.
 * The [yum](https://forge.puppet.com/ceritsc/yum) Yum installer.
@@ -13,7 +13,7 @@ A puppet module to manage the install of Elastic search at the Land Registry
 * The [java-ks](https://forge.puppet.com/puppetlabs/java_ks) Java keystore module.
 * The [openssl](https://forge.puppet.com/camptocamp/openssl) OpenSSL module.
 * The [ca-cert](https://forge.puppet.com/pcfens/ca_cert) CA certs installer.
-* The [datacat](https://forge.puppet.com/richardc/datacat) Data manipulating module.
+* The [datacat](https://forge.puppet.com/richardc/datacat) concatenating data module.
 
 ## Usage
 

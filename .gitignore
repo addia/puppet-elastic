@@ -1,0 +1,6 @@
+.vagrant
+.librarian
+.tmp
+.gem
+.yum
+.*.swp
