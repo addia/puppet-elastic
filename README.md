@@ -1,6 +1,6 @@
-# Land Registry's Elastic Install
+# Land Registry's Elasticsearch Install
 
-A puppet module to manage the install of Elastic search at the Land Registry
+A puppet module to manage the install of Elasticsearch at the Land Registry
 
 ## Requirements
 
@@ -17,10 +17,60 @@ A puppet module to manage the install of Elastic search at the Land Registry
 
 ## Usage
 
-### Main class
+### Create a YAML file in the secrets repo 'cluster' folder to build a server or a cluster for Elasticsearch using the following basic examples:
 
 ```
-class ( 'elastic' )
+
+classes:
+  - 'elastic'
+
+elk_stack_elastic_clustername: "els-dev-cluster"
+
+elk_stack_elastic_instance: "els-dev"
+
+elk_stack_elastic_servers: ['192.168.42.56', '192.168.42.57', '192.168.42.58']
+
+elk_stack_tls_protocol: "https"
+
+elk_stack_do_housekeeping: true
+
+elk_stack_days_to_keep: 30
+
+elk_stack_index_prefix: ['logstash']
+
+```
+
+
+### Create a YAML file in the secrets repo 'network_location' folder to provide a few variables for the server or cluster using the following basic examples:
+
+```
+
+# this is a self signed vagrant_development key.
+# md5sum : a833b812125330a094178fe7ad20d591  vagrant_devel.key
+#
+elk_stack_elastic_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  bla bla bla
+  -----END RSA PRIVATE KEY-----
+
+# this is a self signed vagrant_development cert.
+# md5sum : a28335250a72ef55e671b3db355ccc50  vagrant_devel.crt
+#
+elk_stack_elastic_cert: |
+  -----BEGIN CERTIFICATE-----
+  bla bla bla
+  -----END CERTIFICATE-----
+
+# this is a self sign root CA cert.
+# md5sum : b19458bf253b9ddb1d1715af166e80bd  addis_cacert.pem
+#
+root_ca_cert: |
+  -----BEGIN CERTIFICATE-----
+  bla bla bla
+  -----END CERTIFICATE-----
+
+```
+
 
 https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
 http://tecadmin.net/install-elasticsearch-multi-node-cluster-on-linux/#

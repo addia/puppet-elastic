@@ -16,6 +16,7 @@
 #   restart_on_change  = 'true' otherwise the resource will mask the process ...   :-(
 #   auto_upgrade       = 'false' for NOT EVER to autoupgrade Elastic
 #   java_install       = 'true' for installing the correct Java version
+#   tls_protocol       = the elasticsearch cluster is using http or https
 #   clustername        = the elasticsearch cluster name
 #   instance           = the elasticsearch instance name
 #   cluster_servers    = the servers addresses to configure the cluster
@@ -52,6 +53,7 @@ class elastic (
   $restart_on_change  = true,
   $auto_upgrade       = false,
   $java_install       = true,
+  $tls_protocol       = hiera('elk_stack_tls_protocol'),
   $clustername        = hiera('elk_stack_elastic_clustername'),
   $instance           = hiera('elk_stack_elastic_instance'),
   $cluster_servers    = hiera('elk_stack_elastic_servers'),
@@ -76,7 +78,7 @@ class elastic (
     autoupgrade       => $auto_upgrade,
     java_install      => $java_install,
     datadir           => $data_dir,
-    api_protocol      => 'https',
+    api_protocol      => $tls_protocol,
     api_ca_file       => $ssl_cacert_file,
     config            => {
       'cluster.name'                     => $clustername,
@@ -113,32 +115,34 @@ class elastic (
       }
     }
 
-  file { '/etc/elasticsearch/ssl' :
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-    }
+  if $::tls_protocol == 'https' {
+    file { '/etc/elasticsearch/ssl' :
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      }
 
-  file { $elastic_key:
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => hiera('elk_stack_elastic_key')
-    }
+    file { $elastic_key:
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => hiera('elk_stack_elastic_key')
+      }
 
-  file { $elastic_cert:
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => hiera('elk_stack_elastic_cert')
-    }
+    file { $elastic_cert:
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => hiera('elk_stack_elastic_cert')
+      }
 
-  ca_cert::ca { 'lr_rootca':
-    ensure => 'trusted',
-    source => 'puppet:///modules/elastic/lr_rootca.crt',
+    ca_cert::ca { 'lr_rootca':
+      ensure => 'trusted',
+      source => 'puppet:///modules/elastic/lr_rootca.crt',
+      }
     }
 
   }
