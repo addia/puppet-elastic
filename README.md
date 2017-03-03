@@ -104,14 +104,14 @@ curl -XGET "http://<SERVER_IP>:9200/_nodes/_local?human&pretty"
 
 curl -XGET "http://<SERVER_IP>:9200/_cluster/health?waitForStatus=green&pretty=true"
 
-curl -XGET 'http://<SERVER_IP>:9200/_cluster/stats?human&pretty
+curl -XGET 'http://${SERVER_IP}:9200/_cluster/stats?human&pretty
 
 
 Checking which one the MASTER node is:  (all fixes need to be made on the master node !!)
 
-ID of MASTER node:  curl -s -XGET "http://<SERVER_IP>:9200/_cluster/state/master_node?human&pretty" | grep master_node | awk '{print $3}'
+ID of MASTER node:  curl -s -XGET "http://${SERVER_IP}:9200/_cluster/state/master_node?human&pretty" | grep master_node | awk '{print $3}'
 
-ID of current node:  curl -s -XGET "http://<SERVER_IP>:9200/_nodes/_local?human&pretty" | grep -A1 nodes | tail -1 | awk '{print $1}'
+ID of current node:  curl -s -XGET "http://${SERVER_IP}:9200/_nodes/_local?human&pretty" | grep -A1 nodes | tail -1 | awk '{print $1}'
 
 if the IDs are identical you are on the MASTER node.
 
@@ -135,8 +135,8 @@ Maniplating of indices, data, shards etc all need to be done on the master node 
 
 Deleting a index: 
 
-list the indexes: curl -s -XGET  "http://<SERVER_IP>:9200/_cat/indices?v" | sort
-delete a index: curl -XDELETE "http://<SERVER_IP>:9200/<one index from list above"
+list the indexes: curl -s -XGET  "http://${SERVER_IP}:9200/_cat/indices?v" | sort
+delete a index: curl -XDELETE "http://${SERVER_IP}:9200/<one index from list above"
 
 ....   much more to list here
 
