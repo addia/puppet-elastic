@@ -267,7 +267,7 @@ Sample output:  (this ID should be identical on all nodes, or else trouble...)
 
 Print the node ID of the current node:
 
-curl -s -XGET "http://${SERVER_IP}:9200/_nodes/_local?human&pretty" | grep -A1 nodes | tail -1 | awk '{print $1}'
+curl -s -XGET "http://${SERVER_IP}:9200/_nodes/_local?human&pretty" | grep -A1 '\"nodes\"' | tail -1 | awk '{print $1}'
 Sample output:  (these IDs should be unique unless it is the Master node, or else trouble...)
 "kiBoevN9SEC97EF0Enky6A"  -  this is a cluster node
 "aoW1tLANT8mUmOHQnHCObg"  -  this is the master node ( in this example )
