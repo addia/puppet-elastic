@@ -81,9 +81,12 @@ class elastic (
     api_protocol      => $tls_protocol,
     api_ca_file       => $ssl_cacert_file,
     config            => {
-      'cluster.name'                     => $clustername,
-      'discovery.zen.ping.unicast.hosts' => $cluster_servers,
-      'network.host'                     => $::ipaddress,
+      'cluster.name'                       => $clustername,
+      'discovery.zen.ping.unicast.hosts'   => $cluster_servers,
+      'network.host'                       => $::ipaddress,
+      'discovery.zen.minimum_master_nodes' => 1,
+      'gateway.recover_after_nodes'        => 1,
+      'action.destructive_requires_name'   => true,
       }
     }
 
