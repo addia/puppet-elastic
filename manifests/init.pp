@@ -23,8 +23,7 @@
 #   setup_housekeep    = set to true/undef to set-up houskeeping
 #   days_keep          = days to keep in the ELS database after houskeeping
 #   index_prefix       = the array of indices to run the housekeeping against
-#   keystore_dir       = leave as default
-#   keystore_passwd    = java keystore password
+#   keystore_pass      = java keystore password
 #   ssl_cacert_file    = the CA certificate for self signed certs
 #   elastic_cert       = the certificate for the elastic cluster
 #   elastic_key        = the private for the elastic cluster
@@ -47,21 +46,25 @@
 #
 #
 class elastic (
-  $version            = '5.2.2',
+  $version            = hiera('els_version'),
   $repo_version       = '5.x',
   $repo_manage        = true,
   $restart_on_change  = true,
   $auto_upgrade       = false,
   $java_install       = true,
-  $tls_protocol       = hiera('elk_stack_tls_protocol'),
-  $clustername        = hiera('elk_stack_elastic_clustername'),
-  $instance           = hiera('elk_stack_elastic_instance'),
-  $cluster_servers    = hiera('elk_stack_elastic_servers'),
-  $setup_housekeep    = hiera('elk_stack_do_housekeeping'),
-  $days_keep          = hiera('elk_stack_days_to_keep'),
-  $index_prefix       = hiera('elk_stack_index_prefix'),
-  $keystore_dir       = undef,
-  $keystore_passwd    = 'keystore_pass',
+  $java_version       = hiera('els_java_version'),
+  $tls_enable         = hiera('els_tls_enable'),
+  $ssl_enable         = hiera('els_ssl_enable'),
+  $clustername        = hiera('els_clustername'),
+  $els_minimum_nodes  = hiera('els_minimum_nodes'),
+  $els_requires_nodes = hiera('els_requires_nodes'),
+  $instance           = hiera('els_instance'),
+  $cluster_servers    = hiera('els_servers'),
+  $setup_housekeep    = hiera('els_do_housekeeping'),
+  $days_keep          = hiera('els_days_to_keep'),
+  $index_prefix       = hiera('els_index_prefix'),
+  $keystore_pass      = hiera('els_keystore_pass'),
+  $jvm_options        = hiera('els_jvm_options'),
   $ssl_cacert_file    = '/etc/pki/ca-trust/source/anchors/lr_rootca.crt',
   $elastic_cert       = '/etc/elasticsearch/ssl/elastic.crt',
   $elastic_key        = '/etc/elasticsearch/ssl/elastic.key',
@@ -70,6 +73,13 @@ class elastic (
 
   notify { "## --->>> Installing and configuring ${clustername}": }
 
+  # set the data network
+  if ($::ipaddress_eth1 != undef) {
+    $data_ipaddress = $::ipaddress_eth1
+  } else {
+    $data_ipaddress = $::ipaddress_eth0
+  }
+
   class { 'elasticsearch':
     version           => $version,
     manage_repo       => $repo_manage,
@@ -77,23 +87,30 @@ class elastic (
     restart_on_change => $restart_on_change,
     autoupgrade       => $auto_upgrade,
     java_install      => $java_install,
+    java_package      => "java-${java_version}",
+    jvm_options       => $jvm_options,
     datadir           => $data_dir,
-    api_protocol      => $tls_protocol,
+    api_protocol      => $tls_enable,
     api_ca_file       => $ssl_cacert_file,
     config            => {
       'cluster.name'                       => $clustername,
       'discovery.zen.ping.unicast.hosts'   => $cluster_servers,
-      'network.host'                       => $::ipaddress,
-      'discovery.zen.minimum_master_nodes' => 1,
-      'gateway.recover_after_nodes'        => 1,
+      'network.host'                       => $data_ipaddress,
+      'discovery.zen.minimum_master_nodes' => $els_minimum_nodes,
+      'gateway.recover_after_nodes'        => $els_requires_nodes,
       'action.destructive_requires_name'   => true,
-      }
     }
+  }
 
   elasticsearch::instance { $instance:
-    ensure => 'present',
-    status => 'running',
-    }
+    ensure            => 'present',
+    status            => 'running',
+    ssl               => $ssl_enable,
+    ca_certificate    => $ssl_cacert_file,
+    certificate       => $elastic_cert,
+    private_key       => $elastic_key,
+    keystore_password => $keystore_pass,
+  }
 
   if $::setup_housekeep {
     # Set-up a housekeeping job
@@ -103,7 +120,7 @@ class elastic (
       group   => 'root',
       mode    => '0755',
       content => template('elastic/remove_old_index_sh.erb'),
-      }
+    }
 
     # Set backup cron job
     cron { 'els_housekeeping':
@@ -112,20 +129,20 @@ class elastic (
       hour    => 22,
       minute  => 15,
       user    => root
-      }
-    } else {
+    }
+  } else {
     cron { 'els_housekeeping':
       ensure => absent,
-      }
     }
+  }
 
-  if $::tls_protocol == 'https' {
+  if $::ssl_enable {
     file { '/etc/elasticsearch/ssl' :
       ensure => 'directory',
       owner  => 'root',
       group  => 'root',
       mode   => '0755',
-      }
+    }
 
     file { $elastic_key:
       ensure  => file,
@@ -133,7 +150,7 @@ class elastic (
       group   => 'root',
       mode    => '0644',
       content => hiera('elk_stack_elastic_key')
-      }
+    }
 
     file { $elastic_cert:
       ensure  => file,
@@ -141,15 +158,15 @@ class elastic (
       group   => 'root',
       mode    => '0644',
       content => hiera('elk_stack_elastic_cert')
-      }
+    }
 
     ca_cert::ca { 'lr_rootca':
       ensure => 'trusted',
       source => hiera('root_ca_cert')
-      }
     }
-
   }
+
+}
 
 
 # -----------------------
