@@ -53,7 +53,7 @@ class elastic (
   $auto_upgrade       = false,
   $java_install       = true,
   $java_version       = hiera('els_java_version'),
-  $tls_enable         = hiera('els_tls_enable'),
+  $api_protocol       = hiera('els_api_protocol'),
   $ssl_enable         = hiera('els_ssl_enable'),
   $clustername        = hiera('els_clustername'),
   $els_minimum_nodes  = hiera('els_minimum_nodes'),
@@ -90,7 +90,7 @@ class elastic (
     java_package      => "java-${java_version}",
     jvm_options       => $jvm_options,
     datadir           => $data_dir,
-    api_protocol      => $tls_enable,
+    api_protocol      => $api_protocol,
     api_ca_file       => $ssl_cacert_file,
     config            => {
       'cluster.name'                       => $clustername,
