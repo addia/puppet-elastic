@@ -55,6 +55,7 @@ class elastic (
   $java_version       = hiera('els_java_version'),
   $api_protocol       = hiera('els_api_protocol'),
   $ssl_enable         = hiera('els_ssl_enable'),
+  $system_key         = hiera('els_system_key'),
   $clustername        = hiera('els_clustername'),
   $els_minimum_nodes  = hiera('els_minimum_nodes'),
   $els_requires_nodes = hiera('els_requires_nodes'),
@@ -111,6 +112,10 @@ class elastic (
       certificate       => $elastic_cert,
       private_key       => $elastic_key,
       keystore_password => $keystore_pass,
+      system_key        => $system_key,
+    }
+    elasticsearch::plugin { 'x-pack':
+      instance          => $instance,
     }
   } else {
     elasticsearch::instance { $instance:
