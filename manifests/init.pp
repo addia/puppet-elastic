@@ -47,7 +47,7 @@
 #
 #
 class elastic (
-  $version            = '5.2.0',
+  $version            = '5.2.2',
   $repo_version       = '5.x',
   $repo_manage        = true,
   $restart_on_change  = true,
@@ -83,6 +83,7 @@ class elastic (
     config            => {
       'cluster.name'                     => $clustername,
       'discovery.zen.ping.unicast.hosts' => $cluster_servers,
+      'network.host'                     => $::ipaddress,
       }
     }
 
