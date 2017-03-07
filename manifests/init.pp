@@ -150,9 +150,9 @@ class elastic (
   }
 
   # remove redundant file and stop logging warnings
-  file { "/etc/elasticsearch/${instance}/logging.yml" :
-    ensure => absent,
-  }
+  #file { "/etc/elasticsearch/${instance}/logging.yml" :
+  #  ensure => absent,
+  #}
 
   if $::ssl_enable {
     file { '/etc/elasticsearch/ssl' :
