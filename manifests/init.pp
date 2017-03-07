@@ -102,14 +102,21 @@ class elastic (
     }
   }
 
-  elasticsearch::instance { $instance:
-    ensure            => 'present',
-    status            => 'running',
-    ssl               => $ssl_enable,
-    ca_certificate    => $ssl_cacert_file,
-    certificate       => $elastic_cert,
-    private_key       => $elastic_key,
-    keystore_password => $keystore_pass,
+  if $::ssl_enable {
+    elasticsearch::instance { $instance:
+      ensure            => 'present',
+      status            => 'running',
+      ssl               => $ssl_enable,
+      ca_certificate    => $ssl_cacert_file,
+      certificate       => $elastic_cert,
+      private_key       => $elastic_key,
+      keystore_password => $keystore_pass,
+    }
+  } else {
+    elasticsearch::instance { $instance:
+      ensure => 'present',
+      status => 'running',
+    }
   }
 
   if $::setup_housekeep {
