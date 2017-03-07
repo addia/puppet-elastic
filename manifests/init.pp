@@ -97,6 +97,7 @@ class elastic (
       'cluster.name'                       => $clustername,
       'discovery.zen.ping.unicast.hosts'   => $cluster_servers,
       'network.host'                       => $data_ipaddress,
+      'http.port'                          => 9200,
       'discovery.zen.minimum_master_nodes' => $els_minimum_nodes,
       'gateway.recover_after_nodes'        => $els_requires_nodes,
       'action.destructive_requires_name'   => true,
@@ -146,6 +147,11 @@ class elastic (
     cron { 'els_housekeeping':
       ensure => absent,
     }
+  }
+
+  # remove redundant file and stop logging warnings
+  file { "/etc/elasticsearch/${instance}/logging.yml" :
+    ensure => absent,
   }
 
   if $::ssl_enable {
