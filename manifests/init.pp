@@ -16,14 +16,22 @@
 #   restart_on_change  = 'true' otherwise the resource will mask the process ...   :-(
 #   auto_upgrade       = 'false' for NOT EVER to autoupgrade Elastic
 #   java_install       = 'true' for installing the correct Java version
+#   java_package       = explicitly specify the java package i.E. java-1.8.0-openjdk
+#   api_protocol       = specify either "http" or "https"
+#   ssl_enable         = specify 'true' or "" (undef) to manage SSL set-up
+#   els_system_key     = the system key for X-Pack goes here
 #   tls_protocol       = the elasticsearch cluster is using http or https
 #   clustername        = the elasticsearch cluster name
+#   els_minimum_nodes  = the split brain minimum master nodes i.E. (3/2)+1
+#   els_requires_nodes = the minimum nodes required before starting recovery i.E. (3/2)+1
+#   data_ipaddress     = automatically eth1 if available
 #   instance           = the elasticsearch instance name
 #   cluster_servers    = the servers addresses to configure the cluster
 #   setup_housekeep    = set to true/undef to set-up houskeeping
 #   days_keep          = days to keep in the ELS database after houskeeping
 #   index_prefix       = the array of indices to run the housekeeping against
 #   keystore_pass      = java keystore password
+#   jvm_options        = set-up the JVM memory requirements i.E. ['-Xms512m','-Xmx512m']
 #   ssl_cacert_file    = the CA certificate for self signed certs
 #   elastic_cert       = the certificate for the elastic cluster
 #   elastic_key        = the private for the elastic cluster
@@ -104,6 +112,7 @@ class elastic (
     }
   }
 
+  notify { "## --->>> Configuring SSL ${::ssl_enable}": }
   if $::ssl_enable {
     elasticsearch::instance { $instance:
       ensure            => 'present',
@@ -125,6 +134,7 @@ class elastic (
     }
   }
 
+  notify { "## --->>> Configuring Housekeeping ${::setup_housekeep}": }
   if $::setup_housekeep {
     # Set-up a housekeeping job
     file { '/usr/local/bin/remove_old_index.sh' :
@@ -148,11 +158,6 @@ class elastic (
       ensure => absent,
     }
   }
-
-  # remove redundant file and stop logging warnings
-  #file { "/etc/elasticsearch/${instance}/logging.yml" :
-  #  ensure => absent,
-  #}
 
   if $::ssl_enable {
     file { '/etc/elasticsearch/ssl' :
