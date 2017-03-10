@@ -112,7 +112,7 @@ class elastic (
     }
   }
 
-  notify { "## --->>> Configuring SSL ${::ssl_enable}": }
+  # notify { "## --->>> Configuring instance ${::ssl_enable}": }
   if $::ssl_enable {
     elasticsearch::instance { $instance:
       ensure            => 'present',
@@ -134,9 +134,8 @@ class elastic (
     }
   }
 
-  notify { "## --->>> Configuring Housekeeping ${::setup_housekeep}": }
+  # notify { "## --->>> Configuring Housekeeping ${::setup_housekeep}": }
   if $::setup_housekeep {
-    # Set-up a housekeeping job
     file { '/usr/local/bin/remove_old_index.sh' :
       ensure  => 'file',
       owner   => 'root',
