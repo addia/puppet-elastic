@@ -19,11 +19,11 @@
 #   java_package       = explicitly specify the java package i.E. java-1.8.0-openjdk
 #   api_protocol       = specify either "http" or "https"
 #   ssl_enable         = specify 'true' or "" (undef) to manage SSL set-up
-#   els_system_key     = the system key for X-Pack goes here
+#   system_key         = the system key for X-Pack goes here
 #   tls_protocol       = the elasticsearch cluster is using http or https
 #   clustername        = the elasticsearch cluster name
-#   els_minimum_nodes  = the split brain minimum master nodes i.E. (3/2)+1
-#   els_requires_nodes = the minimum nodes required before starting recovery i.E. (3/2)+1
+#   els_minimum_nodes  = to prevent split brain situations set the minimum master nodes to 2 or (3/2)+1
+#   els_requires_nodes = the minimum nodes required before starting recovery mode is 2 or (3/2)+1
 #   data_ipaddress     = automatically eth1 if available
 #   instance           = the elasticsearch instance name
 #   cluster_servers    = the servers addresses to configure the cluster
@@ -61,18 +61,18 @@ class elastic (
   $auto_upgrade       = false,
   $java_install       = true,
   $java_package       = hiera('els_java_package'),
-  $api_protocol       = hiera('els_api_protocol'),
-  $ssl_enable         = hiera('els_ssl_enable'),
-  $system_key         = hiera('els_system_key'),
+  $api_protocol       = hiera('els_api_protocol','http'),
+  $ssl_enable         = hiera('els_ssl_enable',undef),
+  $system_key         = hiera('els_system_key',undef),
   $clustername        = hiera('els_clustername'),
-  $els_minimum_nodes  = hiera('els_minimum_nodes'),
-  $els_requires_nodes = hiera('els_requires_nodes'),
+  $els_minimum_nodes  = hiera('els_minimum_nodes',1),
+  $els_requires_nodes = hiera('els_requires_nodes',1),
   $instance           = hiera('els_instance'),
   $cluster_servers    = hiera('els_servers'),
-  $setup_housekeep    = hiera('els_do_housekeeping'),
-  $days_keep          = hiera('els_days_to_keep'),
+  $setup_housekeep    = hiera('els_do_housekeeping',undef),
+  $days_keep          = hiera('els_days_to_keep',30),
   $index_prefix       = hiera('els_index_prefix'),
-  $keystore_pass      = hiera('els_keystore_pass'),
+  $keystore_pass      = hiera('els_keystore_pass',undef),
   $jvm_options        = hiera('els_jvm_options'),
   $ssl_cacert_file    = '/etc/pki/ca-trust/source/anchors/lr_rootca.crt',
   $elastic_cert       = '/etc/elasticsearch/ssl/elastic.crt',
@@ -171,7 +171,7 @@ class elastic (
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => hiera('elk_stack_elastic_key')
+      content => hiera('els_elastic_key')
     }
 
     file { $elastic_cert:
@@ -179,7 +179,7 @@ class elastic (
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => hiera('elk_stack_elastic_cert')
+      content => hiera('els_elastic_cert')
     }
 
     ca_cert::ca { 'lr_rootca':

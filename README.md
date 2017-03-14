@@ -4,16 +4,16 @@ A puppet module to manage the install of Elasticsearch at the Land Registry
 
 ## Requirements
 
-* A [Puppet](https://puppet.com/product/open-source-projects) Master server version 3.4 or later.
-* The [stdlib](https://forge.puppet.com/puppetlabs/stdlib) Puppet library.
-* The [elasticsearch](https://forge.puppet.com/elasticsearch/elasticsearch) Elasticsearch module.
-* The [yum](https://forge.puppet.com/ceritsc/yum) Yum installer.
-* The [apt](https://forge.puppet.com/puppetlabs/apt) Apt installer (dependency)
-* The [java](https://forge.puppet.com/puppetlabs/java) Java module.
-* The [java-ks](https://forge.puppet.com/puppetlabs/java_ks) Java keystore module.
-* The [openssl](https://forge.puppet.com/camptocamp/openssl) OpenSSL module.
-* The [ca-cert](https://forge.puppet.com/pcfens/ca_cert) CA certs installer.
-* The [datacat](https://forge.puppet.com/richardc/datacat) concatenating data module.
+* A [Puppet](https://puppet.com/product/open-source-projects) Master server version 3.8.
+* The [stdlib](https://forge.puppet.com/puppetlabs/stdlib) Puppet library version 4.15.0.
+* The [elasticsearch](https://forge.puppet.com/elastic/elasticsearch) Elasticsearch module version 5.1.0.
+* The [yum](https://forge.puppet.com/puppet/yum) Yum installer version 0.10.0.
+* The [apt](https://forge.puppet.com/puppetlabs/apt) Apt installer version 2.3.0 (dependency)
+* The [java](https://forge.puppet.com/puppetlabs/java) Java module version 1.6.0.
+* The [java-ks](https://forge.puppet.com/puppetlabs/java_ks) Java keystore module version 1.4.1.
+* The [openssl](https://forge.puppet.com/camptocamp/openssl) OpenSSL module version 1.9.0.
+* The [ca-cert](https://forge.puppet.com/pcfens/ca_cert) CA certs installer version 1.6.1.
+* The [datacat](https://forge.puppet.com/richardc/datacat) concatenating data module version 0.6.2.
 
 ## Usage
 
@@ -24,33 +24,49 @@ A puppet module to manage the install of Elasticsearch at the Land Registry
 classes:
   - 'elastic'
 
-elk_stack_elastic_clustername: "els-dev-cluster"
+els_version: "5.2.2"
 
-elk_stack_elastic_instance: "els-dev"
+els_java_package: "java-1.8.0-openjdk"
 
-elk_stack_elastic_servers: ['192.168.42.56', '192.168.42.57', '192.168.42.58']
+els_clustername: "test-cluster"
 
-elk_stack_tls_protocol: "https"
+els_instance: "test-els"
 
-elk_stack_do_housekeeping: true
+els_servers: ['192.168.xx.xx']
 
-elk_stack_days_to_keep: 30
+els_index_prefix: ['logstash']
 
-elk_stack_index_prefix: ['logstash']
+els_jvm_options: ['-Xms512m','-Xmx512m']
+
 
 ```
 
 ##### Explanations
 
 | Variable | Description | Comments |
-| ------------- |-------------|-------------|
-|elk_stack_elastic_clustername | The elastic cluster or server name||
-|elk_stack_elastic_instance | The elastic database instance name||
-|elk_stack_elastic_servers | The hash of one or more server names | Working DNS is required!|
-|elk_stack_tls_protocol | What protocoll to use, http or https||
-|elk_stack_do_housekeeping | Enable housekeeping with "true" or none with "undef"||
-|elk_stack_days_to_keep | The number of days to keep in the database||
-|elk_stack_index_prefix | The hash of Elastic search indices||
+| --- | --- | --- |
+|| ** Single server ** ||
+|els_version | The elastic version to install
+|els_java_package | The Java version to install
+|els_elastic_clustername | The elastic cluster or server name
+|els_elastic_instance | The elastic database instance name
+|els_elastic_servers | The hash of one or more server names | Working DNS is required or IP address(es).
+|els_index_prefix | The hash of Elastic search indices
+|els_jvm_options | The Java memory settings
+|| ** Cluster extras ** ||
+|els_minimum_nodes | to prevent split brain situations set the minimum master nodes to 2 or (3/2)+1
+|els_requires_nodes | the minimum nodes required before starting recoveryi node is 2 or (3/2)+1
+|| ** Housekeeping extras ** ||
+|els_do_housekeeping | Enable housekeeping with `true`
+|els_days_to_keep | The number of days of data to keep in the database
+|| ** SSL and TLS extras ** ||
+|els_ssl_enable | `true` enables ssl
+|els_tls_protocol | set to `https` to enable tls for the API
+|els_elastic_key | the OpenSSL key in YAML style
+|els_elastic_cert | the OpenSSL cert in YAML style
+|root_ca_cert | the OpenSSL CA in YAML style 
+|els_keystore_pass | The Java keystore pass phrase
+|els_system_key | The X-Pack system key
 
 
 ##### Create a YAML file in the secrets repo inside the 'network_location' folder to provide a few variables for the server or cluster using the following basic examples:
@@ -83,25 +99,15 @@ root_ca_cert: |
 
 ```
 
-##### Explanations
-
-The three fields can be empty "" if the server is set to http.
-
-| Variable | Description | Comments |
-| ------------- |-------------|-------------|
-|elk_stack_elastic_key | openssl key file content||
-|elk_stack_elastic_cert | openssl cert file content||
-|root_ca_cert | openssl ca cert file content||
-
-
 ### Troubleshooting
 
 ```
 
 Check that the server is started after initial install (before configuration):
 
-curl -XGET "http://localhost:9200/"   or   curl -XGET "http://${SERVER_IP}:9200/"
-Sample output:
+curl -XGET "http://localhost:9200/"   or   curl -XGET "http://`hostname -i`:9200/"
+
+You sould see this output with similar values:
 {
   "name" : "kiBoevN",
   "cluster_name" : "elasticsearch",
@@ -120,8 +126,9 @@ Sample output:
 
 Check the server and cluster status with:
 
-curl -XGET "http://${SERVER_IP}:9200/_nodes/_local?human&pretty"
-Sample output:
+curl -XGET "http://`hostname -i`:9200/_nodes/_local?human&pretty"
+
+You sould see this output with similar values:
 {
   "_nodes" : {
     "total" : 1,
@@ -180,7 +187,7 @@ Sample output:
 ( output cropped .... )
 
 
-curl -XGET "http://${SERVER_IP}:9200/_cluster/health?pretty=true"                    
+curl -XGET "http://`hostname -i`:9200/_cluster/health?pretty=true"                    
 Sample output:
 {
   "cluster_name" : "test-cluster",
@@ -201,7 +208,7 @@ Sample output:
 }
 
 
-curl -XGET "http://${SERVER_IP}:9200/_cluster/stats?human&pretty"
+curl -XGET "http://`hostname -i`:9200/_cluster/stats?human&pretty"
 Sample output:
 {
   "_nodes" : {
@@ -247,7 +254,7 @@ Sample output:
 ( output cropped .... )
 
 
-curl -XGET "http://${SERVER_IP}:9200/_cluster/pending_tasks?pretty=true"
+curl -XGET "http://`hostname -i`:9200/_cluster/pending_tasks?pretty=true"
 Sample output:
 {
   "tasks" : [ ]
@@ -260,14 +267,14 @@ Checking which one the MASTER node is:  (all fixes need to be made on the master
 
 Print the node ID of the MASTER:
 
-curl -s -XGET "http://${SERVER_IP}:9200/_cluster/state/master_node?human&pretty" | grep master_node | awk '{print $3}'
+curl -s -XGET "http://`hostname -i`:9200/_cluster/state/master_node?human&pretty" | grep master_node | awk '{print $3}'
 Sample output:  (this ID should be identical on all nodes, or else trouble...)
 "aoW1tLANT8mUmOHQnHCObg"
 
 
 Print the node ID of the current node:
 
-curl -s -XGET "http://${SERVER_IP}:9200/_nodes/_local?human&pretty" | grep -A1 '\"nodes\"' | tail -1 | awk '{print $1}'
+curl -s -XGET "http://`hostname -i`:9200/_nodes/_local?human&pretty" | grep -A1 '\"nodes\"' | tail -1 | awk '{print $1}'
 Sample output:  (these IDs should be unique unless it is the Master node, or else trouble...)
 "kiBoevN9SEC97EF0Enky6A"  -  this is a cluster node
 "aoW1tLANT8mUmOHQnHCObg"  -  this is the master node ( in this example )
@@ -293,8 +300,8 @@ Maniplating of indices, data, shards etc all need to be done on the master node 
 
 Deleting a index: 
 
-list the indexes: curl -s -XGET  "http://${SERVER_IP}:9200/_cat/indices?v" | sort
-delete a index: curl -XDELETE "http://${SERVER_IP}:9200/<one index from list above"
+list the indexes: curl -s -XGET  "http://`hostname -i`:9200/_cat/indices?v" | sort
+delete a index: curl -XDELETE "http://`hostname -i`:9200/<one index from list above"
 
 ....   much more to list here
 
