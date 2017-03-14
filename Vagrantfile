@@ -16,8 +16,8 @@ Vagrant.configure(2) do |conf|
     yum install -y git
     yum install -y telnet
     puppet module install puppetlabs-stdlib
-    puppet module install elasticsearch-elasticsearch
-    puppet module install ceritsc-yum
+    puppet module install elastic-elasticsearch
+    puppet module install puppet-yum --version 0.10.0
     puppet module install puppetlabs-apt
     puppet module install puppetlabs-java
     puppet module install puppetlabs-java_ks

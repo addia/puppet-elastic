@@ -6,7 +6,7 @@
 # this is a self signed vagrant_development key.
 # md5sum : a833b812125330a094178fe7ad20d591  vagrant_devel.key
 #
-elk_stack_elastic_key: |
+els_elastic_key: |
   -----BEGIN RSA PRIVATE KEY-----
   MIIJJwIBAAKCAgEAoiLJCIHTXg2XjQEx14hKLRlJ/51zY8JaqJDcwf1yVxPsxiQm
   o40YXIq0qt6Euzkmr4StZ1uq4vJxozMS0lVxBFRIcxfW0Hj57ANDUFckiyXTzvIc
@@ -62,7 +62,7 @@ elk_stack_elastic_key: |
 # this is a self signed vagrant_development cert.
 # md5sum : a28335250a72ef55e671b3db355ccc50  vagrant_devel.crt
 #
-elk_stack_elastic_cert: |
+els_elastic_cert: |
   -----BEGIN CERTIFICATE-----
   MIIHTjCCBjagAwIBAgIJANQ/OJQRaAQ8MA0GCSqGSIb3DQEBDQUAMIGyMQswCQYD
   VQQGEwJERTElMCMGA1UECAwcRnJlaWUgdW5kIEhhbnNlc3RhZHQgSGFtYnVyZzEc

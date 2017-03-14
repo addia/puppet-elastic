@@ -7,12 +7,12 @@ A puppet module to manage the install of Elasticsearch at the Land Registry
 * A [Puppet](https://puppet.com/product/open-source-projects) Master server version 3.8.
 * The [stdlib](https://forge.puppet.com/puppetlabs/stdlib) Puppet library version 4.15.0.
 * The [elasticsearch](https://forge.puppet.com/elastic/elasticsearch) Elasticsearch module version 5.1.0.
-* The [yum](https://forge.puppet.com/puppet/yum) Yum installer version 0.10.0.
+* The [yum](https://forge.puppet.com/puppet/yum) Yum installer version 0.10.0 (last version for Puppet 3.8).
 * The [apt](https://forge.puppet.com/puppetlabs/apt) Apt installer version 2.3.0 (dependency)
 * The [java](https://forge.puppet.com/puppetlabs/java) Java module version 1.6.0.
 * The [java-ks](https://forge.puppet.com/puppetlabs/java_ks) Java keystore module version 1.4.1.
 * The [openssl](https://forge.puppet.com/camptocamp/openssl) OpenSSL module version 1.9.0.
-* The [ca-cert](https://forge.puppet.com/pcfens/ca_cert) CA certs installer version 1.6.1.
+* The [ca-cert](https://forge.puppet.com/pcfens/ca_cert) CA certs installer version 1.3.0 (newer versions fail in Puppet 3.8).
 * The [datacat](https://forge.puppet.com/richardc/datacat) concatenating data module version 0.6.2.
 
 ## Usage

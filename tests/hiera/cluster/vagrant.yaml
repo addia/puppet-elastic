@@ -3,20 +3,19 @@
 # This hiera configuration is for the elasticsearch cluster config
 # ----------------------------------------------------------------
 
+els_version: "5.2.2"
 
-elk_stack_elastic_clustername: "els-dev-cluster"
+els_java_package: "java-1.8.0-openjdk"
 
-elk_stack_elastic_instance: "els-dev"
+els_clustername: "dev-cluster"
 
-elk_stack_elastic_servers: ['192.168.42.56', '192.168.42.57', '192.168.42.58']
+els_instance: "dev"
 
-elk_stack_tls_protocol: "https"
+els_servers: ['192.168.42.56', '192.168.42.57', '192.168.42.58']
 
-elk_stack_do_housekeeping: true
+els_index_prefix: ['logstash']
 
-elk_stack_days_to_keep: 30
-
-elk_stack_index_prefix: ['logstash']
+els_jvm_options: ['-Xms512m','-Xmx512m']
 
 
 
