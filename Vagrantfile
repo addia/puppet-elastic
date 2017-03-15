@@ -16,7 +16,6 @@ Vagrant.configure(2) do |conf|
     yum install -y git
     yum install -y telnet
     puppet module install puppetlabs-stdlib
-    puppet module install elastic-elasticsearch
     puppet module install puppet-yum --version 0.10.0
     puppet module install puppetlabs-apt
     puppet module install puppetlabs-java
@@ -24,6 +23,7 @@ Vagrant.configure(2) do |conf|
     puppet module install richardc-datacat
     puppet module install pcfens-ca_cert --version 1.3.0
     puppet module install camptocamp-openssl
+    puppet module install elastic-elasticsearch
     cd /etc/puppet/
     ln -s /vagrant/tests/hiera.vagrant.yaml /etc/puppet/hiera.yaml
     cd /etc/puppet/modules

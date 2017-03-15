@@ -22,8 +22,8 @@
 #   system_key         = the system key for X-Pack goes here
 #   tls_protocol       = the elasticsearch cluster is using http or https
 #   clustername        = the elasticsearch cluster name
-#   els_minimum_nodes  = to prevent split brain situations set the minimum master nodes to 2 or (3/2)+1
-#   els_requires_nodes = the minimum nodes required before starting recovery mode is 2 or (3/2)+1
+#   els_minimum_nodes  = to prevent split brain situations set the minimum master nodes to 2 see README!
+#   els_requires_nodes = the minimum nodes required before starting recovery mode is 2  see README!
 #   data_ipaddress     = automatically eth1 if available
 #   instance           = the elasticsearch instance name
 #   cluster_servers    = the servers addresses to configure the cluster
