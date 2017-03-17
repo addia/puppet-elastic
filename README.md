@@ -45,7 +45,7 @@ els_jvm_options: ['-Xms512m','-Xmx512m']
 
 | Variable | Description | Comments |
 | --- | --- | --- |
-|| ** Single server ** ||
+| --- | ** Single server ** | --- |
 |els_version | The elastic version to install
 |els_java_package | The Java version to install
 |els_elastic_clustername | The elastic cluster or server name
