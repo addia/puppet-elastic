@@ -54,8 +54,8 @@ els_jvm_options: ['-Xms512m','-Xmx512m']
 |els_index_prefix | The hash of Elastic search indices
 |els_jvm_options | The Java memory settings
 |  **Cluster extras** | --- |--- |
-|els_minimum_nodes | to prevent split brain situations set the minimum master nodes to 2 in a three way cluster or do the math (<no of servers>/2)+1
-|els_requires_nodes | the minimum nodes required before starting recoveryi node is 2 in a three way cluster or do the math (<no of servers>/2)+1
+|els_minimum_nodes | to prevent split brain situations set the minimum master nodes to 2 in a three way cluster or do the math `(<no of servers>/2)+1`
+|els_requires_nodes | the minimum nodes required before starting recovery node is 2 in a three way cluster or do the math `(<no of servers>/2)+1`
 |  **Housekeeping extras** | --- |--- |
 |els_do_housekeeping | Enable housekeeping with `true`
 |els_days_to_keep | The number of days of data to keep in the database
