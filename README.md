@@ -45,7 +45,7 @@ els_jvm_options: ['-Xms512m','-Xmx512m']
 
 | Variable | Description | Comments |
 | --- | --- | --- |
-| --- | **Single server** | --- |
+|  **Single server** | --- |--- |
 |els_version | The elastic version to install
 |els_java_package | The Java version to install
 |els_elastic_clustername | The elastic cluster or server name
@@ -53,13 +53,13 @@ els_jvm_options: ['-Xms512m','-Xmx512m']
 |els_elastic_servers | The hash of one or more server names | Working DNS is required or IP address(es).
 |els_index_prefix | The hash of Elastic search indices
 |els_jvm_options | The Java memory settings
-| --- | **Cluster extras** | --- |
-|els_minimum_nodes | to prevent split brain situations set the minimum master nodes to 2 or (3/2)+1
-|els_requires_nodes | the minimum nodes required before starting recoveryi node is 2 or (3/2)+1
-| --- | **Housekeeping extras** | --- |
+|  **Cluster extras** | --- |--- |
+|els_minimum_nodes | to prevent split brain situations set the minimum master nodes to 2 in a three way cluster or do the math (<no of servers>/2)+1
+|els_requires_nodes | the minimum nodes required before starting recoveryi node is 2 in a three way cluster or do the math (<no of servers>/2)+1
+|  **Housekeeping extras** | --- |--- |
 |els_do_housekeeping | Enable housekeeping with `true`
 |els_days_to_keep | The number of days of data to keep in the database
-| --- | **SSL and TLS extras** | --- |
+|  **SSL and TLS extras** | --- |--- |
 |els_ssl_enable | `true` enables ssl
 |els_tls_protocol | set to `https` to enable tls for the API
 |els_elastic_key | the OpenSSL key in YAML style
