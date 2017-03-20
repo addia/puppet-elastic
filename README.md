@@ -64,7 +64,7 @@ els_jvm_options: ['-Xms512m','-Xmx512m']
 | els_tls_protocol | set to `https` to enable tls for the API
 | els_elastic_key | the OpenSSL key in YAML style
 | els_elastic_cert | the OpenSSL cert in YAML style
-| root_ca_cert | the OpenSSL CA in YAML style 
+| root_ca_cert | the OpenSSL CA in YAML style
 | els_keystore_pass | The Java keystore pass phrase
 | els_system_key | The X-Pack system key
 
@@ -107,7 +107,7 @@ Check that the server is started after initial install:
 
 curl -XGET "http://`hostname -i`:9200/"
 
-If this command doesn't work of only works with `localhost`, your JVM settings are wrong. 
+If this command doesn't work of only works with `localhost`, your JVM settings are wrong.
 
 You sould see this output with similar values:
 {
@@ -123,6 +123,31 @@ You sould see this output with similar values:
   },
   "tagline" : "You Know, for Search"
 }
+
+```
+
+Check that all ports are configured correctly:
+
+```
+
+netstat -ltnp
+
+You should see these port plus maybe others:
+
+root@hh-els-c01 [/home/lrtm548] > netstat -ltnp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      1/systemd
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1199/sshd
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      1717/master
+tcp        0      0 0.0.0.0:5666            0.0.0.0:*               LISTEN      5718/nrpe
+tcp6       0      0 :::111                  :::*                    LISTEN      1/systemd
+tcp6       0      0 10.79.0.80:9200         :::*                    LISTEN      748/java            <<<   elastic
+tcp6       0      0 10.79.0.80:9300         :::*                    LISTEN      748/java            <<<   elastic
+tcp6       0      0 :::22                   :::*                    LISTEN      1199/sshd
+tcp6       0      0 ::1:25                  :::*                    LISTEN      1717/master
+tcp6       0      0 :::5666                 :::*                    LISTEN      5718/nrpe
+
 
 ```
 
@@ -191,7 +216,7 @@ You sould see this output with similar values:
 ( output cropped .... )
 
 
-curl -XGET "http://`hostname -i`:9200/_cluster/health?pretty=true"                    
+curl -XGET "http://`hostname -i`:9200/_cluster/health?pretty=true"
 Sample output:
 {
   "cluster_name" : "test-cluster",
@@ -302,7 +327,7 @@ http://devopscube.com/how-to-setup-an-elasticsearch-cluster/
 
 Maniplating of indices, data, shards etc all need to be done on the master node !!  check above how to check !!
 
-Deleting a index: 
+Deleting a index:
 
 list the indexes: curl -s -XGET  "http://`hostname -i`:9200/_cat/indices?v" | sort
 delete a index: curl -XDELETE "http://`hostname -i`:9200/<one index from list above"
