@@ -101,11 +101,13 @@ root_ca_cert: |
 
 ### Troubleshooting
 
+Check that the server is started after initial install:
+
 ```
 
-Check that the server is started after initial install (before configuration):
+curl -XGET "http://`hostname -i`:9200/"
 
-curl -XGET "http://localhost:9200/"   or   curl -XGET "http://`hostname -i`:9200/"
+If this command doesn't work of only works with `localhost`, your JVM settings are wrong. 
 
 You sould see this output with similar values:
 {
@@ -122,9 +124,11 @@ You sould see this output with similar values:
   "tagline" : "You Know, for Search"
 }
 
------
+```
 
 Check the server and cluster status with:
+
+```
 
 curl -XGET "http://`hostname -i`:9200/_nodes/_local?human&pretty"
 
