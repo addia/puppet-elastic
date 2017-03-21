@@ -172,7 +172,7 @@ You sould see this output with similar values:
   "nodes" : {
     "vwSCxd_fSnmM8VC9mErjMw" : {
       "name" : "elastic1",
-      "transport_address" : "192.168.122.190:9300",                        <<<  important for clustering
+      "transport_address" : "192.168.122.190:9300",                    <<<  important for clustering
       "host" : "192.168.122.190",
       "ip" : "192.168.122.190",
       "version" : "5.2.2",
@@ -206,9 +206,9 @@ You sould see this output with similar values:
             "ping" : {
               "unicast" : {
                 "hosts" : [
-                  "192.168.122.190",                                       <<<  cluster node 1
-                  "192.168.122.191",                                       <<<  cluster node 2
-                  "192.168.122.192"                                        <<<  cluster node 3
+                  "192.168.122.190",                                   <<<  cluster node 1
+                  "192.168.122.191",                                   <<<  cluster node 2
+                  "192.168.122.192"                                    <<<  cluster node 3
                 ]
               }
             }
@@ -217,7 +217,7 @@ You sould see this output with similar values:
         "action" : {
           "destructive_requires_name" : "true"
         },
-( output cropped .... )                                                    <<<  lots more blurb
+( output cropped .... )                                                <<<  lots more blurb
 
 
 ```
@@ -234,8 +234,8 @@ You should see these this sample output:
   "cluster_name" : "test-cluster",
   "status" : "green",
   "timed_out" : false,
-  "number_of_nodes" : 3,                                                   <<<  number of nodes attached
-  "number_of_data_nodes" : 3,                                              <<<  number of nodes containing shards
+  "number_of_nodes" : 3,                                               <<<  number of nodes attached
+  "number_of_data_nodes" : 3,                                          <<<  number of nodes containing shards
   "active_primary_shards" : 0,
   "active_shards" : 0,
   "relocating_shards" : 0,
@@ -245,7 +245,7 @@ You should see these this sample output:
   "number_of_pending_tasks" : 0,
   "number_of_in_flight_fetch" : 0,
   "task_max_waiting_in_queue_millis" : 0,
-  "active_shards_percent_as_number" : 100.0                                <<< Do get worried if it is not 100% !!!
+  "active_shards_percent_as_number" : 100.0                            <<< Do get worried if it is not 100% !!!
 }
 
 
@@ -261,13 +261,13 @@ This sample output is from a healthy elastic cluster:
 
 {
   "_nodes" : {
-    "total" : 3,                                                           <<< configured cluster nodes
-    "successful" : 3,                                                      <<< connected cluster nodes
-    "failed" : 0                                                           <<< failed nodes
+    "total" : 3,                                                       <<< configured cluster nodes
+    "successful" : 3,                                                  <<< connected cluster nodes
+    "failed" : 0                                                       <<< failed nodes
   },
   "cluster_name" : "test-cluster",
   "timestamp" : 1488812499583,
-  "status" : "green",                                                      <<< green = OK ... else fix it !!!
+  "status" : "green",                                                  <<< green = OK ... else fix it !!!
   "indices" : {
     "count" : 0,
     "shards" : { },
@@ -300,7 +300,7 @@ This sample output is from a healthy elastic cluster:
       "size" : "0b",
       "size_in_bytes" : 0
     },
-( output cropped .... )                                                    <<<  lots more blurb
+( output cropped .... )                                                <<<  lots more blurb
 
 
 ```
@@ -350,16 +350,6 @@ Sample output:
 
 ```
 
-### Documentation (always a good read ...)
-
-https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
-
-http://tecadmin.net/install-elasticsearch-multi-node-cluster-on-linux/#
-
-http://devopscube.com/how-to-setup-an-elasticsearch-cluster/
-
-
-
 ### Database and Index Management
 
 ```
@@ -374,6 +364,16 @@ delete a index: curl -XDELETE "http://`hostname -i`:9200/<one index from list ab
 ....   much more to list here
 
 ```
+
+
+### Documentation (always a good read ...)
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
+
+http://tecadmin.net/install-elasticsearch-multi-node-cluster-on-linux/#
+
+http://devopscube.com/how-to-setup-an-elasticsearch-cluster/
+
 
 
 ### License
