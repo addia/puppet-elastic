@@ -134,6 +134,15 @@ class elastic (
     }
   }
 
+  # notify { "## --->>> installing the identify script: }
+  file { '/usr/local/bin/elastic_master_check.sh' :
+    ensure => 'file',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    source => "puppet:///modules/elastic/elastic_master_check.sh",
+  }
+
   # notify { "## --->>> Configuring Housekeeping ${::setup_housekeep}": }
   if $::setup_housekeep {
     file { '/usr/local/bin/remove_old_index.sh' :

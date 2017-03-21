@@ -336,25 +336,14 @@ Be aware, all fixes need to be made on the master node, or else you could be ask
 
 Everry cluster member should print the same Master ID, or the server is not member of the cluster you think it should.
 
+Thanks to Chris Hatton for starting a script to display the Master and Node server credentials in human read-able form.
+
+
 ```
 
-Print the node ID of the MASTER:
+Please run on your elastic server this script:
 
-curl -s -XGET "http://`hostname -i`:9200/_cluster/state/master_node?human&pretty" | grep master_node | awk '{print $3}'
-
-Sample current master ID:
-
-"aoW1tLANT8mUmOHQnHCObg"
-
-
-Print the unique node ID of the current node:
-
-curl -s -XGET "http://`hostname -i`:9200/_nodes/_local?human&pretty" | grep -A1 '\"nodes\"' | tail -1 | awk '{print $1}'
-
-Sample output:
-
-"kiBoevN9SEC97EF0Enky6A"  -  this is a cluster member node
-
+/usr/local/bin/elastic_master_check.sh
 
 ```
 
