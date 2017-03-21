@@ -352,18 +352,20 @@ Sample output:
 
 ### Database and Index Management
 
-```
-
 Maniplating of indices, data, shards etc all need to be done on the master node !!  check above how to check !!
+
+
+```
 
 Deleting a index:
 
 list the indexes: curl -s -XGET  "http://`hostname -i`:9200/_cat/indices?v" | sort
-delete a index: curl -XDELETE "http://`hostname -i`:9200/<one index from list above"
+delete a index: curl -XDELETE "http://`hostname -i`:9200/<one_index_from_list_above"
 
 ....   much more to list here
 
 ```
+
 
 
 ### Documentation (always a good read ...)
@@ -373,6 +375,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
 http://tecadmin.net/install-elasticsearch-multi-node-cluster-on-linux/#
 
 http://devopscube.com/how-to-setup-an-elasticsearch-cluster/
+
 
 
 
