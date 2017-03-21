@@ -155,6 +155,14 @@ tcp6       0      0 :::5666                 :::*                    LISTEN      
 
 ```
 
+In case of major trouble with the install, I have provided a clean-up script to remove all references of Elastic for a clean new start.
+
+```
+Download it from Github:   https://github.com/LandRegistry-Ops/puppet-elastic/blob/master/files/elastic-clean-up.sh
+Find it on the puppet server:  /etc/puppet/environments/<your_branch>/modules/elastic/files/elastic-clean-up.sh
+
+```
+
 Check the server and cluster status with:
 
 ```
@@ -361,6 +369,12 @@ Deleting a index:
 
 list the indexes: curl -s -XGET  "http://`hostname -i`:9200/_cat/indices?v" | sort
 delete a index: curl -XDELETE "http://`hostname -i`:9200/<one_index_from_list_above"
+
+
+Housekeeping:
+
+check the housekeeping funtionality.
+A cron script is provided, see:  https://github.com/LandRegistry-Ops/puppet-elastic/blob/master/templates/remove_old_index_sh.erb
 
 ....   much more to list here
 
