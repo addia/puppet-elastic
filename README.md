@@ -69,33 +69,37 @@ els_jvm_options: ['-Xms512m','-Xmx512m']
 | els_system_key | The X-Pack system key
 
 
-##### Create a YAML file in the secrets repo inside the 'network_location' folder to provide a few variables for the server or cluster using the following basic examples:
+##### When SSL and/or x-pack is required create a YAML file in the secrets repo inside the 'network_location' folder to provide the cwcertificate variables for the server or cluster using the following basic examples:
 
 ```
 
-# this is a self signed vagrant_development key.
-# md5sum : a833b812125330a094178fe7ad20d591  vagrant_devel.key
+# this is the LR signed Elastic key.
+# md5sum : a833b812125330a094178fe7ad20d591  elastic.key
 #
-elk_stack_elastic_key: |
+els_elastic_key: |
   -----BEGIN RSA PRIVATE KEY-----
   bla bla bla
   -----END RSA PRIVATE KEY-----
 
-# this is a self signed vagrant_development cert.
-# md5sum : a28335250a72ef55e671b3db355ccc50  vagrant_devel.crt
+# this is the LR signed Elastic cert.
+# md5sum : a28335250a72ef55e671b3db355ccc50  elastic.crt
 #
-elk_stack_elastic_cert: |
+els_elastic_cert: |
   -----BEGIN CERTIFICATE-----
   bla bla bla
   -----END CERTIFICATE-----
 
-# this is a self sign root CA cert.
-# md5sum : b19458bf253b9ddb1d1715af166e80bd  addis_cacert.pem
+# this is the LR sign root CA cert.
+# md5sum : b19458bf253b9ddb1d1715af166e80bd  root_cacert.pem
 #
 root_ca_cert: |
   -----BEGIN CERTIFICATE-----
   bla bla bla
   -----END CERTIFICATE-----
+
+els_keystore_pass: "stuff"
+
+els_system_key: "stuff"
 
 ```
 
@@ -168,7 +172,7 @@ You sould see this output with similar values:
   "nodes" : {
     "vwSCxd_fSnmM8VC9mErjMw" : {
       "name" : "elastic1",
-      "transport_address" : "192.168.122.190:9300",                            <<<  important for clustering
+      "transport_address" : "192.168.122.190:9300",                        <<<  important for clustering
       "host" : "192.168.122.190",
       "ip" : "192.168.122.190",
       "version" : "5.2.2",
@@ -202,9 +206,9 @@ You sould see this output with similar values:
             "ping" : {
               "unicast" : {
                 "hosts" : [
-                  "192.168.122.190",                                           <<<  cluster node 1
-                  "192.168.122.191",                                           <<<  cluster node 2
-                  "192.168.122.192"                                            <<<  cluster node 3
+                  "192.168.122.190",                                       <<<  cluster node 1
+                  "192.168.122.191",                                       <<<  cluster node 2
+                  "192.168.122.192"                                        <<<  cluster node 3
                 ]
               }
             }
@@ -213,7 +217,7 @@ You sould see this output with similar values:
         "action" : {
           "destructive_requires_name" : "true"
         },
-( output cropped .... )                                                        <<<  lots more blurb
+( output cropped .... )                                                    <<<  lots more blurb
 
 
 ```
@@ -230,8 +234,8 @@ You should see these this sample output:
   "cluster_name" : "test-cluster",
   "status" : "green",
   "timed_out" : false,
-  "number_of_nodes" : 3,                                                       <<<  number of nodes attached
-  "number_of_data_nodes" : 3,                                                  <<<  number of nodes containing shards
+  "number_of_nodes" : 3,                                                   <<<  number of nodes attached
+  "number_of_data_nodes" : 3,                                              <<<  number of nodes containing shards
   "active_primary_shards" : 0,
   "active_shards" : 0,
   "relocating_shards" : 0,
@@ -241,7 +245,7 @@ You should see these this sample output:
   "number_of_pending_tasks" : 0,
   "number_of_in_flight_fetch" : 0,
   "task_max_waiting_in_queue_millis" : 0,
-  "active_shards_percent_as_number" : 100.0                                    <<< Do get worried if it is not 100% !!!
+  "active_shards_percent_as_number" : 100.0                                <<< Do get worried if it is not 100% !!!
 }
 
 
@@ -257,13 +261,13 @@ This sample output is from a healthy elastic cluster:
 
 {
   "_nodes" : {
-    "total" : 3,                                                               <<< configured cluster nodes
-    "successful" : 3,                                                          <<< connected cluster nodes
-    "failed" : 0                                                               <<< failed nodes
+    "total" : 3,                                                           <<< configured cluster nodes
+    "successful" : 3,                                                      <<< connected cluster nodes
+    "failed" : 0                                                           <<< failed nodes
   },
   "cluster_name" : "test-cluster",
   "timestamp" : 1488812499583,
-  "status" : "green",                                                          <<< green = OK ... else fix it !!!
+  "status" : "green",                                                      <<< green = OK ... else fix it !!!
   "indices" : {
     "count" : 0,
     "shards" : { },
@@ -296,7 +300,7 @@ This sample output is from a healthy elastic cluster:
       "size" : "0b",
       "size_in_bytes" : 0
     },
-( output cropped .... )                                                        <<<  lots more blurb
+( output cropped .... )                                                    <<<  lots more blurb
 
 
 ```
@@ -312,30 +316,41 @@ IThis is a healthy sample output:
 {
   "tasks" : [ ]
 }
+
 Normally a cluster completes tasks in fractions of a second. If the list is long there might be an issue ...
 
 -----
 
-Checking which one the MASTER node is:  (all fixes need to be made on the master node !!)
+```
+
+Checking and finding the current MASTER node:
+Be aware, all fixes need to be made on the master node, or else you could be asking for trouble !!!
+
+Everry cluster member should print the same Master ID, or the server is not member of the cluster you think it should.
+
+```
 
 Print the node ID of the MASTER:
 
 curl -s -XGET "http://`hostname -i`:9200/_cluster/state/master_node?human&pretty" | grep master_node | awk '{print $3}'
-Sample output:  (this ID should be identical on all nodes, or else trouble...)
+
+Sample current master ID:
+
 "aoW1tLANT8mUmOHQnHCObg"
 
 
-Print the node ID of the current node:
+Print the unique node ID of the current node:
 
 curl -s -XGET "http://`hostname -i`:9200/_nodes/_local?human&pretty" | grep -A1 '\"nodes\"' | tail -1 | awk '{print $1}'
-Sample output:  (these IDs should be unique unless it is the Master node, or else trouble...)
-"kiBoevN9SEC97EF0Enky6A"  -  this is a cluster node
-"aoW1tLANT8mUmOHQnHCObg"  -  this is the master node ( in this example )
+
+Sample output:
+
+"kiBoevN9SEC97EF0Enky6A"  -  this is a cluster member node
 
 
 ```
 
-### Documentation
+### Documentation (always a good read ...)
 
 https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.html
 
